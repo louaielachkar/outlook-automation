@@ -2,6 +2,8 @@ from time import sleep
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
+import threading
+import random
 import helper
 
 
@@ -40,8 +42,7 @@ def add_contact(driver):
     for contact in contacts:
         fill_form(driver, contact)
         
-def main():
-    accounts = open("accounts.txt", mode='r', encoding='utf-8').read().split('\n')
+def main_process(accounts):
     for account in accounts:
         if account == "":
             continue
@@ -53,6 +54,25 @@ def main():
         add_contact(driver)
         print("Contacts added successfully")
         driver.quit()
+
+def main():
+    accounts = open("accounts.txt", mode='r', encoding='utf-8').read().split('\n')
+    random.shuffle(accounts)
+    n = 25
+    chunks = [accounts[i * n:(i + 1) * n] for i in range((len(accounts) + n - 1) // n )]
+    thread_list = list()
+    for chunk in chunks:
+        t = threading.Thread(name='Thread', target=main_process, args=(chunk,))
+        t.start()
+        sleep(1)
+        print ("t.name + ' started!'")
+        thread_list.append(t)
+
+    # Wait for all threads to complete
+    for thread in thread_list:
+        thread.join()
+
+    print("Completed!")
 
 if __name__ == '__main__':
     main()

@@ -43,7 +43,25 @@ def outlook_login(driver, email, password):
             break
         except:
             pass
+    print("Usernmae password entered")
+    try:
+        sleep(2)
+        driver.find_element_by_xpath("/html/body/div/form/div/div/div[2]/div[1]/div/div/div/div/div/div[3]/div/div[2]/div/div[1]")
+        driver.find_element_by_xpath("/html/body/div/form/div/div/div[2]/div[1]/div/div/div/div/div/div[3]/div/div[2]/div/div[3]/div[2]/div/div/div[1]/input").click()
+    except:
+        pass
+    print("Stay signed in passed")
+    while True:
+        try:
+            sleep(2)
+            driver.find_element_by_xpath('/html/body/div[2]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[1]/div[2]/div/a/span')
+            break
+        except:
+            pass
     print("Login complete")
+
+
+
 
 # check and close outlook pop-ups
 def check_popup(driver):
